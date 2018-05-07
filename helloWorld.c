@@ -6,7 +6,7 @@
 
 int main (int argc, char * argv[]) {
     int numTasks, taskID, len;
-    char hostname[MPI_PROCESSOR_NAME];
+    char hostname[MPI_MAX_PROCESSOR_NAME];
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &numTasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &taskID);
