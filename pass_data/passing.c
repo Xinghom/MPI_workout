@@ -6,8 +6,9 @@
 
 void main(int argc, char * argv[]) {
     int numTasks, taskID, length;
-    int hostname[MPI_MAX_PROCESSOR_NAME];
+    char hostname[MPI_MAX_PROCESSOR_NAME];
     int partner, message;
+    int tag = 1;
     MPI_Status stats[2];
     MPI_Request reqs[2];
 
@@ -29,13 +30,13 @@ void main(int argc, char * argv[]) {
         else if (taskID >= numTasks/2) 
             partner = taskID - numTasks/2;
 
-        MPI_Irecv(&message, 1, MPI_INT, partner, 1, MPI_COMM_WORLD, &reqs[0]);
-        MPI_Isend(&taskid, 1, MPI_INT, partner, 1, MPI_COMM_WORLD, &reqs[1]);
+        MPI_Irecv(&message, 1, MPI_INT, partner, tag, MPI_COMM_WORLD, &reqs[0]);
+        MPI_Isend(&taskID, 1, MPI_INT, partner, tag, MPI_COMM_WORLD, &reqs[1]);
 
         // block until requests are complete
         MPI_Waitall(2, reqs, stats);
 
-        printf("Task %d is partner with %d\n",taskid, message);
+        printf("Task %d is the partner with %d\n",taskID, message);
         
     } else {
         if (taskID == MASTER)
